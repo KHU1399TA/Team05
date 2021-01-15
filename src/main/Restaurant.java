@@ -1,9 +1,17 @@
 package main;
-
 import java.util.ArrayList;
 
 public class Restaurant {
-    ArrayList<User> user;
-    ArrayList<Food> food;
-    ArrayList<Order> order;
+    ArrayList<User>  user  =new ArrayList<>();
+    ArrayList<Food>  food  =new ArrayList<>();
+    ArrayList<Order> order =new ArrayList<>();
+
+    @Override
+    public String toString() {
+        return "Restaurant{" +
+                "user=" + user +
+                ", food=" + food +
+                ", order=" + order +
+                '}';
+    }
 }

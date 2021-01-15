@@ -1,6 +1,9 @@
 package main;
 
+import main.Enums.AccessLevel;
 import main.Enums.ActionResult;
+
+import java.util.Date;
 
 class Chef extends User {
     ActionResult addFood(Food food) {
@@ -21,5 +24,9 @@ class Chef extends User {
 
     ActionResult cook(int id) {
         return ActionResult.SUCCESS;
+    }
+
+    public Chef(String userName, String password, AccessLevel accessLevel, Date registrationDate, Date lastLoginDate) {
+        super(userName, password, accessLevel, registrationDate, lastLoginDate);
     }
 }
