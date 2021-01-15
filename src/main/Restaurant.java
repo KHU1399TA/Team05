@@ -2,7 +2,7 @@ package main;
 import java.util.ArrayList;
 
 public class Restaurant {
-    ArrayList<User>  user  =new ArrayList<>();
+   static ArrayList<User>  user  =new ArrayList<>();
     ArrayList<Food>  food  =new ArrayList<>();
     ArrayList<Order> order =new ArrayList<>();
 

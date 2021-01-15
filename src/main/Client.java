@@ -14,8 +14,8 @@ public class Client extends User {
         return ActionResult.SUCCESS;
     }
 
-    public Client( String userName, String password, AccessLevel accessLevel, Date registrationDate, Date lastLoginDate, String address) {
-        super( userName, password, accessLevel, registrationDate, lastLoginDate);
+    public Client(String userName, String password, AccessLevel accessLevel, Date registrationDate, Date lastLoginDate, String firstName, String lastName, String phoneNumber, String address) {
+        super(userName, password, accessLevel, registrationDate, lastLoginDate, firstName, lastName, phoneNumber);
         this.address = address;
     }
 }
