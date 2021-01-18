@@ -6,7 +6,7 @@ import static main.Restaurant.user;
 
 import java.util.Date;
 
-abstract class User {
+public abstract class User {
     String userName;
     private String password;
     AccessLevel accessLevel;
@@ -17,15 +17,20 @@ abstract class User {
     String phoneNumber;
 
 
-    static ActionResult login(String userName, String password ,User users) {
+    static LoginResult login(String userName, String password) {
         for (int i = 0; i < user.size(); i++) {
             if (user.get(i).userName.equals(userName))
-                if (user.get(i).password.equals(password)){
-                   users.accessLevel= user.get(i).accessLevel;
-                    return ActionResult.SUCCESS;
+                if (user.get(i).password.equals(password)) {
+
+                    LoginResult loginResult = new LoginResult();
+                    loginResult.actionResult = ActionResult.SUCCESS;
+                    loginResult.user = user.get(i);
+                    return loginResult;
                 }
         }
-        return ActionResult.INVALID_PASSWORD_OR_USERNAME;
+        LoginResult loginResult = new LoginResult();
+        loginResult.actionResult = ActionResult.INVALID_PASSWORD_OR_USERNAME;
+        return loginResult;
     }
 
     public User(String userName, String password, AccessLevel accessLevel, Date registrationDate, Date lastLoginDate, String firstName, String lastName, String phoneNumber) {
@@ -43,7 +48,6 @@ abstract class User {
     public String toString() {
         return "User{" +
                 "userName='" + userName + '\'' +
-                ", password='" + password + '\'' +
                 ", accessLevel=" + accessLevel +
                 ", registrationDate=" + registrationDate +
                 ", lastLoginDate=" + lastLoginDate +
