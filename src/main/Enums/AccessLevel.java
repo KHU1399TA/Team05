@@ -5,7 +5,7 @@ public enum AccessLevel {
     CASHIER("CASHIER"),
     CHEF("CHEF"),
     DELIVERYMAN("DELIVERYMAN"),
-    CLIENT(" CLIENT");
+    CLIENT("CLIENT");
     public String level;
 
     AccessLevel(String level) {

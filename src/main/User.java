@@ -8,7 +8,7 @@ import java.util.Date;
 
 public abstract class User {
     String userName;
-    private String password;
+     String password;
     AccessLevel accessLevel;
     Date registrationDate;
     Date lastLoginDate;
@@ -46,14 +46,15 @@ public abstract class User {
 
     @Override
     public String toString() {
-        return "User{" +
-                "userName='" + userName + '\'' +
-                ", accessLevel=" + accessLevel +
-                ", registrationDate=" + registrationDate +
-                ", lastLoginDate=" + lastLoginDate +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", phoneNumber='" + phoneNumber + '\'' +
-                '}';
+        return "User :\n" +
+                " userName        =" + userName + '\n' +
+                " password        =" + password + '\n' +
+                " accessLevel     =" + accessLevel +"\n"+
+                " registrationDate=" + registrationDate +"\n"+
+                " lastLoginDate   =" + lastLoginDate +"\n"+
+                " firstName       =" + firstName + '\n' +
+                " lastName        =" + lastName + '\n' +
+                " phoneNumber     =" + phoneNumber + '\n'
+                ;
     }
 }

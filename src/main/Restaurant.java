@@ -11,7 +11,7 @@ public class Restaurant {
     ActionResult registerForClients(User user){
         if (user.userName.contains(" ")) return ActionResult.INVALID_USERNAME;
         for (int i = 0; i < Restaurant.user.size(); i++)
-            if (Restaurant.user.get(i).equals(user.userName)) return ActionResult.USERNAME_ALREADY_EXIST;
+            if (Restaurant.user.get(i).userName.equals(user.userName)) return ActionResult.USERNAME_ALREADY_EXIST;
         Restaurant.user.add(user);
         return ActionResult.SUCCESS;
     }
