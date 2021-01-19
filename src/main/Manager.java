@@ -21,9 +21,9 @@ class Manager extends User {
                 System.out.println(Restaurant.user.get(i) + "\n");
                 System.out.println("which field ? \nchoose a number ");
                 System.out.println("1) firstname\t2) lastname\t3) phone number\t4) username\t5) password\t6) accesslevel ");
-                int num = input.nextInt();
+                int selectedNumber = input.nextInt();
                 input.nextLine();
-                switch (num) {
+                switch (selectedNumber) {
                     case 1:
                         System.out.print("edited firstname    : ");
                         Restaurant.user.get(i).firstName = input.nextLine();
@@ -55,8 +55,8 @@ class Manager extends User {
                     case 6:
                         System.out.println("choose the accesslevel ");
                         System.out.println(" 1) Manager\n 2) Chef\n 3) Cashier\n 4) Deliverman");
-                        num = input.nextInt();
-                        switch (num) {
+                        selectedNumber = input.nextInt();
+                        switch (selectedNumber) {
                             default -> Restaurant.user.get(i).accessLevel = AccessLevel.MANAGER;
                             case 2 -> Restaurant.user.get(i).accessLevel = AccessLevel.CHEF;
                             case 3 -> Restaurant.user.get(i).accessLevel = AccessLevel.CASHIER;

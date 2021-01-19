@@ -8,14 +8,13 @@ import java.util.Date;
 
 public abstract class User {
     String userName;
-     String password;
+    String password;
     AccessLevel accessLevel;
     Date registrationDate;
     Date lastLoginDate;
     String firstName;
     String lastName;
     String phoneNumber;
-
 
     static LoginResult login(String userName, String password) {
         for (int i = 0; i < user.size(); i++) {

@@ -1,17 +1,11 @@
 package main;
-
 import main.Enums.*;
-
 import static main.Restaurant.user;
-
 import java.util.*;
-
 import static main.User.login;
-
 public class Main {
-
-
     public static void main(String[] args) {
+
         Restaurant restaurant = new Restaurant();
         String userName;
         String password;
@@ -23,31 +17,9 @@ public class Main {
         String phoneNumber;
         String address;
         Scanner input = new Scanner(System.in);
-        System.out.println("manager registration ! ");
-        System.out.println("welcome ! \n\nplease answer the questions");
-        System.out.print("firstname    : ");
-        firstName = input.nextLine();
-        System.out.print("lastname     : ");
-        lastName = input.nextLine();
-        System.out.print("phone number : ");
-        phoneNumber = input.nextLine();
-        System.out.println("!!!!   username should not contain space   !!!!!");
-        System.out.print("username     : ");
-        userName = input.nextLine();
-        System.out.print("password     : ");
-        password = input.nextLine();
-        registrationDate = new Date();
-        lastLoginDate = new Date();
-        accessLevel = AccessLevel.MANAGER;
-        Manager manager = new Manager(userName, password, accessLevel, registrationDate, lastLoginDate, firstName, lastName, phoneNumber);
-        System.out.println("\n" + manager.register(manager));
 
-        if (manager.register(manager) == ActionResult.SUCCESS) {
-            user.add(manager);
-            System.out.println("_".repeat(30) + "\n");
-            System.out.println("You have successfully registered ! \n");
-            System.out.println("_".repeat(30) + "\n");
-        }
+        Manager manager=new Manager("manager","123" ,AccessLevel.MANAGER,new Date(),new Date(),"manager","managery","0910000");
+        manager.register(manager);
 
         boolean exist = true;
         while (exist) {
@@ -55,10 +27,10 @@ public class Main {
             System.out.println("Enter a number ");
             System.out.println("1) Register(Clients)\n2) Login\n3) exit");
             System.out.print("number : ");
-            int num = input.nextInt();
+            int selectedNumber = input.nextInt();
             input.nextLine();
             System.out.println("-".repeat(30));
-            switch (num) {
+            switch (selectedNumber) {
                 case 1:
                     System.out.println(">home>Register(Clients)\n");
                     System.out.println("welcome ! \n\nplease answer the questions");
@@ -88,7 +60,6 @@ public class Main {
                     }
                     break;
 
-
                 case 2:
                     System.out.println(">home>login\n");
                     System.out.println("Login ");
@@ -101,21 +72,21 @@ public class Main {
                     if (login(userName, password).actionResult == ActionResult.SUCCESS) {
                         if (login(userName, password).user.accessLevel == AccessLevel.MANAGER) { //manager
                             System.out.println("welcome Manager ! \n");
-                            boolean exitManager = true;
-                            while (exitManager) {
+                            boolean previousManager = true;
+                            while (previousManager) {
                                 System.out.println(">home>login>Manager\n");
                                 System.out.println("please enter a number ");
-                                System.out.println(" 1) register \n 2) edit\n 3) remove\n 4) exit");
-                                num = input.nextInt();
+                                System.out.println(" 1) register \n 2) edit\n 3) remove\n 4) previous");
+                                selectedNumber = input.nextInt();
                                 input.nextLine();
-                                switch (num) {
+                                switch (selectedNumber) {
                                     case 1:
                                         System.out.println(">home>login>Manager>register\n");
                                         System.out.println("which one ?");
-                                        System.out.println(" 1) Manager\n 2) Chef\n 3) Cashier\n 4) Deliveran");
-                                        num = input.nextInt();
+                                        System.out.println(" 1) Manager\n 2) Chef\n 3) Cashier\n 4) Deliverman");
+                                        selectedNumber = input.nextInt();
                                         input.nextLine();
-                                        switch (num) {
+                                        switch (selectedNumber) {
                                             case 2 -> accessLevel = AccessLevel.CHEF;
                                             case 3 -> accessLevel = AccessLevel.CASHIER;
                                             case 4 -> accessLevel = AccessLevel.DELIVERYMAN;
@@ -144,7 +115,7 @@ public class Main {
                                             }
                                         } else if (accessLevel == AccessLevel.DELIVERYMAN) {
                                             DeliverMan deliverMan = new DeliverMan(userName, password, accessLevel, registrationDate, lastLoginDate, firstName, lastName, phoneNumber);
-                                            System.out.println(manager.register(deliverMan));
+                                            System.out.println("\n"+manager.register(deliverMan));
                                             if (manager.register(deliverMan) == ActionResult.SUCCESS) {
                                                 System.out.println("_".repeat(30) + "\n");
                                                 System.out.println("the employee is successfully registered ! \n");
@@ -183,21 +154,21 @@ public class Main {
                                         break;
 
                                     case 4:
-                                        exitManager = false;
+                                        previousManager = false;
                                         break;
                                 }
                             }
                         } else if (login(userName, password).user.accessLevel == AccessLevel.CHEF) { //chef
-                            boolean exitChef = true;
-                            while (exitChef) {
+                            boolean previousChef = true;
+                            while (previousChef) {
                                 System.out.println(">home>login>Chef\n");
                                 System.out.println("welcome Chef ! \n");
                                 System.out.println("please enter a number ");
-                                System.out.println(" 1) add food \n 2) edit food\n 3) remove food\n 4) change food state\n 5) cook\n 6) exit");
-                                num = input.nextInt();
+                                System.out.println(" 1) add food \n 2) edit food\n 3) remove food\n 4) change food state\n 5) cook\n 6) previous");
+                                selectedNumber = input.nextInt();
                                 input.nextLine();
-                                switch (num) {
-                                    case 1:
+                                switch (selectedNumber) {
+                                    case 1:        //[TODO]chef
 
                                     case 2:
 
@@ -208,60 +179,60 @@ public class Main {
                                     case 5:
 
                                     case 6:
-                                        exitChef = false;
+                                        previousChef = false;
                                         break;
                                 }
                             }
                         } else if (login(userName, password).user.accessLevel == AccessLevel.DELIVERYMAN) { //deliverman
-                            boolean exitDeliverMan = true;
-                            while (exitDeliverMan) {
+                            boolean previousDeliverMan = true;
+                            while (previousDeliverMan) {
                                 System.out.println(">home>login>Deliverman\n");
                                 System.out.println("welcome Deliverman ! \n");
                                 System.out.println("please enter a number ");
-                                System.out.println(" 1) deliver\n 2) exit");
-                                num = input.nextInt();
+                                System.out.println(" 1) deliver\n 2) previous");
+                                selectedNumber = input.nextInt();
                                 input.nextLine();
-                                switch (num) {
-                                    case 1:
+                                switch (selectedNumber) {
+                                    case 1:    //[TODO]Deliverman
 
                                     case 2:
-                                        exitDeliverMan = false;
+                                        previousDeliverMan = false;
                                         break;
                                 }
                             }
                         } else if (login(userName, password).user.accessLevel == AccessLevel.CLIENT) { //client
-                            boolean exitClient = true;
-                            while (exitClient) {
+                            boolean previousClient = true;
+                            while (previousClient) {
                                 System.out.println(">home>login>Client\n");
                                 System.out.println("welcome Client! \n");
                                 System.out.println("please enter a number ");
-                                System.out.println(" 1) order\n 2)revoke \n 3) exit");
-                                num = input.nextInt();
+                                System.out.println(" 1) order\n 2)revoke \n 3) previous");
+                                selectedNumber = input.nextInt();
                                 input.nextLine();
-                                switch (num) {
-                                    case 1:
+                                switch (selectedNumber) {
+                                    case 1:       // [TODO] client
 
                                     case 2:
 
                                     case 3:
-                                        exitClient = false;
+                                        previousClient = false;
                                         break;
                                 }
                             }
                         } else if (login(userName, password).user.accessLevel == AccessLevel.CASHIER) { //cashier
-                            boolean exitCasheir = true;
-                            while (exitCasheir) {
+                            boolean previousCasheir = true;
+                            while (previousCasheir) {
                                 System.out.println(">home>login>Cashier\n");
                                 System.out.println("welcome cashier ! ");
                                 System.out.println("please enter a number ");
-                                System.out.println(" 1) confirm order\n 2) exit");
-                                num = input.nextInt();
+                                System.out.println(" 1) confirm order\n 2) previous");
+                                selectedNumber = input.nextInt();
                                 input.nextLine();
-                                switch (num) {
-                                    case 1:
+                                switch (selectedNumber) {
+                                    case 1:      //[TODO]cashier
 
                                     case 2:
-                                        exitCasheir = false;
+                                        previousCasheir = false;
                                         break;
                                 }
                             }
@@ -269,7 +240,6 @@ public class Main {
 
                     }
                     break;
-
 
                 case 3:
                     exist = false;
