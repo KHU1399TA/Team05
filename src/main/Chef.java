@@ -2,7 +2,7 @@ package main;
 
 import main.Enums.ActionResult;
 
-class Chef extends User {
+class Chef extends main.User {
     ActionResult addFood(Food food) {
         return ActionResult.SUCCESS;
     }
@@ -23,3 +23,5 @@ class Chef extends User {
         return ActionResult.SUCCESS;
     }
 }
+
+

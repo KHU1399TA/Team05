@@ -3,9 +3,11 @@ package main.Enums;
 public enum AccessLevel {
     MANAGER("MANAGER"),
     CASHIER("CASHIER"),
-    CHEF(" CHEF"),
+    CHEF("CHEF"),
     DELIVERYMAN("DELIVERYMAN"),
-    CLIENT(" CLIENT");
+    CLIENT("CLIENT"),
+    NOACCESSLEVEL("NOACCESSLEVEL");
+
     public String level;
 
     AccessLevel(String level) {

@@ -4,7 +4,8 @@ public enum OrderState {
     MADE("MADE"),
     CONFIRMED("CONFIRMED"),
     COOKED("COOKED"),
-    DELIVERED("DELIVERED");
+    DELIVERED("DELIVERED"),
+    NOTREADY("NOTREADY");
     public String state;
 
     OrderState(String state) {
