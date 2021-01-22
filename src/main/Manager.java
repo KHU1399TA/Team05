@@ -53,8 +53,8 @@ class Manager extends User {
                         Restaurant.user.get(i).password = input.nextLine();
                         return ActionResult.SUCCESS;
                     case 6:
-                        System.out.println("choose the accesslevel ");
-                        System.out.println(" 1) Manager\n 2) Chef\n 3) Cashier\n 4) Deliverman");
+                        System.out.println("choose the accessevel ");
+                        System.out.println(" 1) Manager\n 2) Chef\n 3) Cashier\n 4) DeliverYman");
                         selectedNumber = input.nextInt();
                         switch (selectedNumber) {
                             default -> Restaurant.user.get(i).accessLevel = AccessLevel.MANAGER;

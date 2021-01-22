@@ -18,5 +18,20 @@ public class Client extends User {
         super(userName, password, accessLevel, registrationDate, lastLoginDate, firstName, lastName, phoneNumber);
         this.address = address;
     }
+
+    @Override
+    public String toString() {
+        return "Client:\n" +
+                " userName        =" + userName + '\n' +
+                " password        =" + password + '\n' +
+                " accessLevel     =" + accessLevel +"\n"+
+                " registrationDate=" + registrationDate +"\n"+
+                " lastLoginDate   =" + lastLoginDate +"\n"+
+                " firstName       =" + firstName + '\n' +
+                " lastName        =" + lastName + '\n' +
+                " phoneNumber     =" + phoneNumber + '\n' +
+                " address         =" + address+"\n"
+                ;
+    }
 }
 
