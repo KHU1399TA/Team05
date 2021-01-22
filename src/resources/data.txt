@@ -1,1 +1,56 @@
-Something ...
+User :
+ userName        =manager
+ password        =123
+ accessLevel     =MANAGER
+ registrationDate=Fri Jan 22 10:06:05 IRST 2021
+ lastLoginDate   =Fri Jan 22 10:06:05 IRST 2021
+ firstName       =manager
+ lastName        =managery
+ phoneNumber     =0910000
+
+User :
+ userName        =chef
+ password        =123
+ accessLevel     =CHEF
+ registrationDate=Thu Jan 21 23:30:11 IRST 2021
+ lastLoginDate   =Thu Jan 21 23:30:11 IRST 2021
+ firstName       =fsd
+ lastName        =sfd
+ phoneNumber     =dsf
+
+User :
+ userName        =D
+ password        =123
+ accessLevel     =DELIVERYMAN
+ registrationDate=Thu Jan 21 23:33:56 IRST 2021
+ lastLoginDate   =Thu Jan 21 23:33:56 IRST 2021
+ firstName       =sdf
+ lastName        =sdf
+ phoneNumber     =sdf
+
+------------------------------
+Client:
+ userName        =client
+ password        =123
+ accessLevel     =CLIENT
+ registrationDate=Thu Jan 21 23:33:12 IRST 2021
+ lastLoginDate   =Thu Jan 21 23:33:12 IRST 2021
+ firstName       =dsf
+ lastName        =df
+ phoneNumber     =df
+ address         =df
+
+------------------------------
+Food :
+ id          =1
+ name        =df
+ ingredients =[B, B, B]
+ isAvailable =true
+
+Food :
+ id          =2
+ name        =sd
+ ingredients =[X, X, X]
+ isAvailable =false
+
+------------------------------
