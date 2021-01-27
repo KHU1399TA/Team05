@@ -2,8 +2,8 @@ User :
  userName        =manager
  password        =123
  accessLevel     =MANAGER
- registrationDate=Fri Jan 22 10:06:05 IRST 2021
- lastLoginDate   =Fri Jan 22 10:06:05 IRST 2021
+ registrationDate=Wed Jan 27 11:17:45 IRST 2021
+ lastLoginDate   =Wed Jan 27 11:17:45 IRST 2021
  firstName       =manager
  lastName        =managery
  phoneNumber     =0910000
@@ -12,45 +12,69 @@ User :
  userName        =chef
  password        =123
  accessLevel     =CHEF
- registrationDate=Thu Jan 21 23:30:11 IRST 2021
- lastLoginDate   =Thu Jan 21 23:30:11 IRST 2021
- firstName       =fsd
- lastName        =sfd
- phoneNumber     =dsf
+ registrationDate=Wed Jan 27 11:11:06 IRST 2021
+ lastLoginDate   =Wed Jan 27 11:17:18 IRST 2021
+ firstName       =asdf
+ lastName        =asdf
+ phoneNumber     =asfd
 
 User :
- userName        =D
+ userName        =cashier
+ password        =123
+ accessLevel     =CASHIER
+ registrationDate=Wed Jan 27 11:12:17 IRST 2021
+ lastLoginDate   =Wed Jan 27 11:16:58 IRST 2021
+ firstName       =asdf
+ lastName        =asdf
+ phoneNumber     =asdf
+
+User :
+ userName        =deliver
  password        =123
  accessLevel     =DELIVERYMAN
- registrationDate=Thu Jan 21 23:33:56 IRST 2021
- lastLoginDate   =Thu Jan 21 23:33:56 IRST 2021
- firstName       =sdf
- lastName        =sdf
- phoneNumber     =sdf
+ registrationDate=Wed Jan 27 11:12:33 IRST 2021
+ lastLoginDate   =Wed Jan 27 11:17:53 IRST 2021
+ firstName       =asdf
+ lastName        =asdf
+ phoneNumber     =asdf
 
 ------------------------------
 Client:
  userName        =client
  password        =123
  accessLevel     =CLIENT
- registrationDate=Thu Jan 21 23:33:12 IRST 2021
- lastLoginDate   =Thu Jan 21 23:33:12 IRST 2021
- firstName       =dsf
- lastName        =df
- phoneNumber     =df
- address         =df
+ registrationDate=Wed Jan 27 11:10:47 IRST 2021
+ lastLoginDate   =Wed Jan 27 11:16:30 IRST 2021
+ firstName       =asf
+ lastName        =af
+ phoneNumber     =asf
+ address         =asf
 
 ------------------------------
 Food :
  id          =1
- name        =df
- ingredients =[B, B, B]
+ name        =sadf
+ ingredients =[sdf, sdf, ghgffd]
  isAvailable =true
 
 Food :
  id          =2
  name        =sd
- ingredients =[X, X, X]
- isAvailable =false
+ ingredients =[sdf, sdf, sdf]
+ isAvailable =true
 
 ------------------------------
+Order
+ id        =1
+ userName  =client
+ foodId    =1
+ state     =DELIVERED
+ orderedAt =Wed Jan 27 11:14:05 IRST 2021
+
+Order
+ id        =2
+ userName  =client
+ foodId    =2
+ state     =COOKED
+ orderedAt =Wed Jan 27 11:16:46 IRST 2021
+

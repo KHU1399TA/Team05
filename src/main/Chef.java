@@ -5,7 +5,7 @@ import java.util.*;
 class Chef extends User {
     private static final Scanner input = new Scanner(System.in);
 
-    ActionResult addFood(Food food) {
+   static ActionResult addFood(Food food) {
         for (int i = 0; i < Restaurant.food.size(); i++) {
             if (Restaurant.food.get(i).id == food.id) return ActionResult.ID_OR_FOOD_ALREADY_EXIST;
         }
@@ -13,7 +13,7 @@ class Chef extends User {
         return ActionResult.SUCCESS;
     }
 
-    ActionResult editFood(int id) {
+   static ActionResult editFood(int id) {
         for (int i = 0; i < Restaurant.food.size(); i++) {
             if (Restaurant.food.get(i).id == id) {
                 System.out.println(Restaurant.food.get(i));
@@ -55,7 +55,7 @@ class Chef extends User {
         return ActionResult.FOOD_NOT_FOUND;
     }
 
-    ActionResult removeFood(int id) {
+   static ActionResult removeFood(int id) {
         for (int i = 0; i < Restaurant.food.size(); i++) {
             if (Restaurant.food.get(i).id == id) {
                 Restaurant.food.remove(i);
@@ -65,7 +65,7 @@ class Chef extends User {
         return ActionResult.FOOD_NOT_FOUND;
     }
 
-    public  void foodState(){
+    static   void foodState(){
         int  selectedNumber;
         boolean isAvailable;
         System.out.print("id : ");
@@ -78,7 +78,7 @@ class Chef extends User {
         System.out.println( changeFoodState(id,isAvailable));
     }
 
-     ActionResult  changeFoodState(int id, boolean isAvailable) {
+    static ActionResult  changeFoodState(int id, boolean isAvailable) {
         for (int i = 0; i< Restaurant.food.size(); i++){
             if (Restaurant.food.get(i).id==id){
                 Restaurant.food.get(i).isAvailable=isAvailable;
@@ -88,8 +88,16 @@ class Chef extends User {
         return ActionResult.FOOD_NOT_FOUND;
     }
 
-    ActionResult cook(int id) {
-return ActionResult.FOOD_NOT_FOUND;
+    static ActionResult cook(int id) {
+        for (int i=0;i<Restaurant.order.size();i++){
+            if (Restaurant.order.get(i).id==id)
+                if (Restaurant.order.get(i).state== OrderState.CONFIRMED){
+                    Restaurant.order.get(i).state=OrderState.COOKED;
+                    return ActionResult.SUCCESS;
+                }
+        }
+        return ActionResult.ORDER_NOT_FOUND;
+
     }
 
     public Chef(String userName, String password, AccessLevel accessLevel, Date registrationDate, Date lastLoginDate, String firstName, String lastName, String phoneNumber) {

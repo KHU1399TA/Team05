@@ -10,7 +10,7 @@ public class Restaurant {
     static ArrayList<Order> order = new ArrayList<>();
     static ArrayList<Client> client = new ArrayList<>();
 
-    ActionResult registerForClients(Client client) {
+    static ActionResult registerForClients(Client client) {
         if (client.userName.contains(" ")) return ActionResult.INVALID_USERNAME;
         for (int i = 0; i < Restaurant.client.size(); i++)
             if (Restaurant.client.get(i).userName.equals(client.userName)) return ActionResult.USERNAME_ALREADY_EXIST;
