@@ -1,11 +1,8 @@
 package main;
 
-import main.Enums.AccessLevel;
 import main.Enums.ActionResult;
 
-import java.util.Date;
-
-class Chef extends User {
+class Chef extends Main { //changed from "extends main.User" to extend Main
     ActionResult addFood(Food food) {
         return ActionResult.SUCCESS;
     }
@@ -23,10 +20,15 @@ class Chef extends User {
     }
 
     ActionResult cook(int id) {
+
+        for (int i = 0; i < currentOrders.size(); i++){
+            if(currentOrders.get(i).id == id){
+                currentOrders.get(i).state = "COOKED";
+            }
+        }
+
         return ActionResult.SUCCESS;
     }
-
-    public Chef(String userName, String password, AccessLevel accessLevel, Date registrationDate, Date lastLoginDate, String firstName, String lastName, String phoneNumber) {
-        super(userName, password, accessLevel, registrationDate, lastLoginDate, firstName, lastName, phoneNumber);
-    }
 }
+
+

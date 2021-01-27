@@ -1,86 +1,161 @@
 package main;
-import main.Enums.AccessLevel;
+
 import main.Enums.ActionResult;
-import java.util.Date;
-import java.util.Scanner;
+import utils.FileManager;
 
-class Manager extends User {
-    private static Scanner input = new Scanner(System.in);
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 
-    ActionResult register(User user) {
-        if (user.userName.contains(" ")) return ActionResult.INVALID_USERNAME;
-        for (int i = 0; i < Restaurant.user.size(); i++)
-            if (Restaurant.user.get(i).userName.equals(user.userName)) return ActionResult.USERNAME_ALREADY_EXIST;
-        Restaurant.user.add(user);
+class Manager extends main.User {
+    ActionResult register(main.User user) {
+        //System.out.println(user.lastLoginDate);
+
+        String result_of_search = "not_ok";
+
+        BufferedReader reader;
+        try {
+            reader = new BufferedReader(new FileReader(
+                    "src/resources/Usernames-and-Passwords"));
+            String line = reader.readLine();
+
+
+            while (line != null) {
+                // System.out.println(line);
+                // read next line
+
+                String ins1 = line;
+                String[] ins2 = ins1.split(",");
+                String username2 = ins2[3];
+                //String password2 = ins2[4];
+                if (user.userName.equals(username2)) {
+                    result_of_search = "ok";
+                    break;
+
+                }
+
+                line = reader.readLine();
+            }
+
+            reader.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        if (result_of_search == "ok") {
+            return ActionResult.USERNAME_ALREADY_EXIST;
+        } else {
+            StringBuilder allString = new StringBuilder();
+            allString.append(user.firstName + ",");
+            allString.append(user.lastName + ",");
+            allString.append(user.phoneNumber + ",");
+            allString.append(user.userName + ",");
+            allString.append(user.password + ",");
+            allString.append(user.accessLevel + ",");
+            allString.append(user.registrationDate + ",");
+            allString.append(user.lastLoginDate);
+
+            FileManager fmanager = new FileManager("src/resources/Usernames-and-Passwords");
+            fmanager.write(allString.toString(), true);
+            return ActionResult.SUCCESS;
+        }
+    }
+
+    ActionResult edit(String userName, int index, String changed) {
+
+        StringBuilder allString = new StringBuilder();
+
+        BufferedReader reader;
+        try {
+            reader = new BufferedReader(new FileReader(
+                    "src/resources/Usernames-and-Passwords"));
+            String line = reader.readLine();
+
+            while (line != null) {
+                // System.out.println(line);
+                // read next line
+
+                String ins1 = line;
+                String[] ins2 = ins1.split(",");
+                String userName2 = ins2[3];
+
+                if (userName.equals(userName2)) {
+
+                    StringBuilder ins3 = new StringBuilder();
+
+                    for (int i = 0; i < 8; i++) {
+                        if (i == 7) {
+                            ins3.append(ins2[i]);
+
+                        } else {
+
+                            if (i == index) {
+
+                                ins2[i] = changed;
+                                ins3.append(ins2[i] + ",");
+                            } else ins3.append(ins2[i] + ",");
+                        }
+                    }
+
+                    allString.append(ins3);
+                    allString.append("\n");
+
+                } else {
+                    allString.append(line);
+                    allString.append("\n");
+                }
+
+
+                line = reader.readLine();
+            }
+
+            reader.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        FileManager fmanager = new FileManager("src/resources/Usernames-and-Passwords");
+        fmanager.write(allString.toString(), false);
+
         return ActionResult.SUCCESS;
     }
 
-    ActionResult edit(String userName) {
-        for (int i = 0; i < Restaurant.user.size(); i++) {
-            if (Restaurant.user.get(i).userName.equals(userName)) {
-                System.out.println(Restaurant.user.get(i) + "\n");
-                System.out.println("which field ? \nchoose a number ");
-                System.out.println("1) firstname\t2) lastname\t3) phone number\t4) username\t5) password\t6) accesslevel ");
-                int selectedNumber = input.nextInt();
-                input.nextLine();
-                switch (selectedNumber) {
-                    case 1:
-                        System.out.print("edited firstname    : ");
-                        Restaurant.user.get(i).firstName = input.nextLine();
-                        return ActionResult.SUCCESS;
-
-                    case 2:
-                        System.out.print("edited lastname     : ");
-                        Restaurant.user.get(i).lastName = input.nextLine();
-                        break;
-                    case 3:
-                        System.out.print("edited phone number : ");
-                        Restaurant.user.get(i).phoneNumber = input.nextLine();
-                        return ActionResult.SUCCESS;
-                    case 4:
-                        System.out.println("!!!!   username should not contain space   !!!!!");
-                        System.out.print("edited username     : ");
-                        String editedUserName = input.nextLine();
-                        if (editedUserName.contains(" ")) return ActionResult.INVALID_USERNAME;
-                        for (int j = 0; j < Restaurant.user.size(); j++) {
-                            if (Restaurant.user.get(i).userName.equals(editedUserName))
-                                return ActionResult.USERNAME_ALREADY_EXIST;
-                        }
-                        Restaurant.user.get(i).userName = editedUserName;
-                        return ActionResult.SUCCESS;
-                    case 5:
-                        System.out.print("edited password     : ");
-                        Restaurant.user.get(i).password = input.nextLine();
-                        return ActionResult.SUCCESS;
-                    case 6:
-                        System.out.println("choose the accesslevel ");
-                        System.out.println(" 1) Manager\n 2) Chef\n 3) Cashier\n 4) Deliverman");
-                        selectedNumber = input.nextInt();
-                        switch (selectedNumber) {
-                            default -> Restaurant.user.get(i).accessLevel = AccessLevel.MANAGER;
-                            case 2 -> Restaurant.user.get(i).accessLevel = AccessLevel.CHEF;
-                            case 3 -> Restaurant.user.get(i).accessLevel = AccessLevel.CASHIER;
-                            case 4 -> Restaurant.user.get(i).accessLevel = AccessLevel.DELIVERYMAN;
-                        }
-                        return ActionResult.SUCCESS;
-                }
-                break;
-            }
-        }
-        return ActionResult.USERNAME_NOT_FOUND;
-    }
-
     ActionResult remove(String userName) {
-        for (int i=0;i<Restaurant.user.size();i++){
-            if (Restaurant.user.get(i).userName.equals(userName)){
-                Restaurant.user.remove(i);
-                return ActionResult.SUCCESS;
-            }
-        }
-        return ActionResult.USERNAME_NOT_FOUND;
-    }
 
-    public Manager(String userName, String password, AccessLevel accessLevel, Date registrationDate, Date lastLoginDate, String firstName, String lastName, String phoneNumber) {
-        super(userName, password, accessLevel, registrationDate, lastLoginDate, firstName, lastName, phoneNumber);
+        StringBuilder allString = new StringBuilder();
+
+        BufferedReader reader;
+        try {
+            reader = new BufferedReader(new FileReader(
+                    "src/resources/Usernames-and-Passwords"));
+            String line = reader.readLine();
+
+            while (line != null) {
+                // System.out.println(line);
+                // read next line
+
+                String ins1 = line;
+                String[] ins2 = ins1.split(",");
+                String userName2 = ins2[3];
+
+                if (userName.equals(userName2)) {
+
+                } else {
+                    allString.append(line);
+                    allString.append("\n");
+                }
+                line = reader.readLine();
+            }
+            reader.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        FileManager fmanager = new FileManager("src/resources/Usernames-and-Passwords");
+        fmanager.write(allString.toString(), false);
+
+        return ActionResult.SUCCESS;
+
     }
 }

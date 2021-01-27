@@ -8,6 +8,7 @@ public class Order {
     int id;
     String userName;
     int foodId;
-    OrderState state;
-    Date orderedAt;
+    String state; //changed from OrderState to string
+    String orderedAt; //changed from date to string
+    String address; //i added this one
 }
