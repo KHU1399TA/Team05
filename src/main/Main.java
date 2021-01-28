@@ -1,10 +1,13 @@
 package main;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+
 import main.Enums.AccessLevel;
 import main.Enums.ActionResult;
 import main.Enums.OrderState;
 import utils.FileManager;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Scanner;
@@ -13,11 +16,12 @@ import java.util.stream.Collectors;
 
 public class Main {
 
-    public static ArrayList<Order> currentOrders = new ArrayList<>();
     public static String username_for_order = "";
     public static int id_of_order = 1000;
     public static boolean repeatFlag = true;
     public static int repeatFlagCounter = 0;
+    static Scanner scanner = new Scanner(System.in);
+    static FileManager fileManager = new FileManager("src/resources/Food");
 
     public static String currentTime() {
 
@@ -25,120 +29,21 @@ public class Main {
         DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
         String formattedDate = myDateObj.format(myFormatObj);
         return formattedDate;
-
     }
-
-    public static AccessLevel login() {
-
-        String result = "not_ok";
-        String accessLevel = "";
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Please enter your username and password");
-        String username = scanner.nextLine();
-        String password = scanner.nextLine();
-        StringBuilder allString = new StringBuilder();
-
-        BufferedReader reader;
-        try {
-            reader = new BufferedReader(new FileReader(
-                    "src/resources/Usernames-and-Passwords"));
-            String line = reader.readLine();
-
-            while (line != null) {
-                // System.out.println(line);
-                // read next line
-
-                String ins1 = line;
-                String[] ins2 = ins1.split(",");
-                String username2 = ins2[3];
-                String password2 = ins2[4];
-
-                if (username.equals(username2) && password.equals(password2)) {
-
-                    username_for_order = username2;
-
-                    result = "ok";
-                    accessLevel = ins2[5];
-                    //System.out.println("Success");
-                    //System.out.println(manager2[7]);
-                    ins2[7] = currentTime();
-                    StringBuilder ins3 = new StringBuilder();
-                    for (int i = 0; i < 8; i++) {
-                        if (i != 7) {
-                            ins3.append(ins2[i] + ",");
-
-                        } else {
-                            ins3.append(ins2[i]);
-                        }
-                    }
-
-                    allString.append(ins3);
-                    allString.append("\n");
-
-                } else {
-                    allString.append(line);
-                    allString.append("\n");
-                }
-
-                line = reader.readLine();
-            }
-
-            reader.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        FileManager fmanager = new FileManager("src/resources/Usernames-and-Passwords");
-        fmanager.write(allString.toString(), false);
-
-        if (result == "ok") {
-            System.out.println("Login is successful :)");
-
-            switch (accessLevel) {
-                case "MANAGER":
-                    return AccessLevel.MANAGER;
-                //break;
-                case "CASHIER":
-                    return AccessLevel.CASHIER;
-                //break;
-                case "CHEF":
-                    return AccessLevel.CHEF;
-                //break;
-                case "DELIVERYMAN":
-                    return AccessLevel.DELIVERYMAN;
-                //break;
-                case "CLIENT":
-                    return AccessLevel.CLIENT;
-                //break;
-            }
-
-        } else {
-            System.out.println("Login is not successful due to invalid username or password :(.");
-            // System.out.println("Please run the program again!");
-        }
-        return AccessLevel.NOACCESSLEVEL;
-    }
-
 
     public static void main(String[] args) {
-
+        fillFoodArraylist(fileManager);
         while (repeatFlag) {
-
             System.out.println();
             if (repeatFlagCounter != 0) {
                 //System.out.println("------------------------------------Job is Done-------------------------------");
                 System.out.println("-----------Login as current user or another user to continue-----------");
             }
+            String result_of_login = User.login().toString();
 
-            Scanner scanner = new Scanner(System.in);
-            String result_of_login = login().toString();
-
-            if (result_of_login == "MANAGER") {
+            if (result_of_login.equals("MANAGER")) {
                 boolean managerFlag = true;
-
                 System.out.println("You are a Manager!");
-
-
                 Manager mng = new Manager();
 
                 User usr = new User() {
@@ -201,13 +106,12 @@ public class Main {
                             if (repeatCounter == 1) {
 
                                 System.out.println("Which one do you want to edit for the user " + user_to_edit + "?");
-                                System.out.println(
-                                        "name(enter 0) / familyName (enter 1) / phoneNumber (enter 2) / password (enter 4) / accessLevel (enter 5)");
+                                System.out.println("name(enter 0) / familyName (enter 1) / phoneNumber (enter 2) / password (enter 4) / accessLevel (enter 5)");
                                 int index = scanner.nextInt();
                                 scanner.nextLine();
                                 System.out.println("Please Enter your change:");
                                 String ans3 = scanner.nextLine().toString();
-                                if (mng.edit(user_to_edit, index, ans3).toString() == "SUCCESS") {
+                                if (mng.edit(user_to_edit, index, ans3).toString().equals("SUCCESS")) {
                                     System.out.println("Your change is Done!");
                                     System.out.println("Do you want to edit another field for the user " + user_to_edit + "? y/n");
                                     String ans2 = scanner.nextLine().toString();
@@ -227,7 +131,7 @@ public class Main {
                                 scanner.nextLine();
                                 System.out.println("Please Enter your change!");
                                 String ans3 = scanner.nextLine().toString();
-                                if (mng.edit(user_to_edit, index, ans3).toString() == "SUCCESS") {
+                                if (mng.edit(user_to_edit, index, ans3).toString().equals("SUCCESS")) {
                                     System.out.println("Your change is Done!");
                                     System.out.println("Do you want to edit another field for the user " + user_to_edit + "? y/n");
                                     String ans2 = scanner.nextLine().toString();
@@ -251,7 +155,7 @@ public class Main {
 
                             if (repeatCounter == 1) {
 
-                                if (mng.remove(user_to_remove).toString() == "SUCCESS") {
+                                if (mng.remove(user_to_remove).toString().equals("SUCCESS")) {
                                     System.out.println("The user removed successfully!");
                                     System.out.println("Do you want to remove another user? y/n");
                                     String ans2 = scanner.nextLine().toString();
@@ -262,7 +166,7 @@ public class Main {
                                 }
                                 repeatCounter++;
                             } else {
-                                if (mng.remove(user_to_remove).toString() == "SUCCESS") {
+                                if (mng.remove(user_to_remove).toString().equals("SUCCESS")) {
                                     System.out.println("The user removed successfully!");
                                     System.out.println("Do you want to remove another user? y/n");
                                     String ans2 = scanner.nextLine().toString();
@@ -283,85 +187,88 @@ public class Main {
                     }
                 }
 
-            } else if (result_of_login == "CHEF") {
-                System.out.println("You are a Chef!");
-
-                System.out.println("What do you want to do? (cook/addFood/editFood/removeFood)");
-                String ans = scanner.nextLine();
-
-                if (ans.equals("addFood")) {
-
-                } else if (ans.equals("editFood")) {
-
-                } else if (ans.equals("removeFood")) {
-
-                } else if (ans.equals("changeFoodState")) {
-
-                } else if (ans.equals("cook")) {
-
-                    boolean ifanyorder = false;
-
-                    for (int i = 0; i < currentOrders.size(); i++) {
-                        if (currentOrders.get(i).state == "NOTREADY") {
-                            ifanyorder = true;
-
-                        }
+            } else if (result_of_login.equals("CHEF")) {
+                int selectedNumber = mainMenuForChef();
+                switch (selectedNumber) {
+                    case 1 -> System.out.println(Chef.addFood(selectFood()));
+                    case 2 -> {
+                        System.out.print("id : ");
+                        System.out.println(Chef.editFood(scanner.nextInt()));
+                        scanner.nextLine();
                     }
+                    case 3 -> {
+                        System.out.print("id : ");
+                        System.out.println(Chef.removeFood(scanner.nextInt()));
+                        scanner.nextLine();
+                    }
+                    case 4 -> {Chef.foodState();
+                    scanner.nextLine();
+                    }
+                    case 5 -> {
+                        scanner.nextLine();
+                        boolean ifanyorder = false;
 
-                    if (currentOrders.size() == 0 || ifanyorder == false) {
-                        System.out.println("Sorry, there is no order to cook!");
-                        //ifanyorder = false;
+                        for (int i = 0; i < Restaurant.order.size(); i++) {
+                            if (Restaurant.order.get(i).state.equals("NOTREADY")) {
+                                ifanyorder = true;
 
-                    } else {
-
-                        System.out.println();
-                        System.out.println("There are some order(s) to cook!");
-                        System.out.println();
-                        System.out.println("This is the list of order(s):");
-
-                        for (int i = 0; i < currentOrders.size(); i++) {
-
-                            BufferedReader reader;
-                            try {
-                                reader = new BufferedReader(new FileReader(
-                                        "src/resources/Food"));
-                                String line = reader.readLine();
-
-                                while (line != null) {
-                                    String ins1 = line;
-                                    String[] ins2 = ins1.split(",");
-                                    String foodid = ins2[0];
-                                    String nameoffood = ins2[1];
-                                    int foodid2 = Integer.parseInt(foodid);
-
-                                    if (currentOrders.get(i).foodId == foodid2 && currentOrders.get(i).state == "NOTREADY") {
-
-                                        System.out.println("Order id: " + currentOrders.get(i).id + ", Type of food: " + nameoffood);
-                                    }
-
-                                    line = reader.readLine();
-                                }
-
-                                reader.close();
-                            } catch (IOException e) {
-                                e.printStackTrace();
                             }
                         }
-                    }
 
-                    System.out.println();
+                        if (Restaurant.order.size() == 0 || !ifanyorder) {
+                            System.out.println("Sorry, there is no order to cook!");
+                            //ifanyorder = false;
 
-                    if (ifanyorder) {
-                        System.out.println("Do you want to cook the foods? y/n");
-                        ans = scanner.nextLine().toString();
-                        if (ans.equals("y")) {
-                            for (int i = 0; i < currentOrders.size(); i++) {
-                                Chef newChef = new Chef();
+                        } else {
 
-                                if (currentOrders.get(i).state == "NOTREADY") {
-                                    if (newChef.cook(currentOrders.get(i).id).toString() == "SUCCESS") {
-                                        System.out.println("Order(s) cooked");
+                            System.out.println();
+                            System.out.println("There are some order(s) to cook!");
+                            System.out.println();
+                            System.out.println("This is the list of order(s):");
 
+                            for (int i = 0; i < Restaurant.order.size(); i++) {
+
+                                BufferedReader reader;
+                                try {
+                                    reader = new BufferedReader(new FileReader("src/resources/Food"));
+                                    String line = reader.readLine();
+
+                                    while (line != null) {
+                                        String ins1 = line;
+                                        String[] ins2 = ins1.split(",");
+                                        String foodid = ins2[0];
+                                        String nameoffood = ins2[1];
+                                        int foodid2 = Integer.parseInt(foodid);
+
+                                        if (Restaurant.order.get(i).foodId == foodid2 && Restaurant.order.get(i).state.equals("NOTREADY")) {
+
+                                            System.out.println("Order id: " + Restaurant.order.get(i).id + ", Type of food: " + nameoffood);
+                                        }
+
+                                        line = reader.readLine();
+                                    }
+
+                                    reader.close();
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }
+
+                        System.out.println();
+
+                        if (ifanyorder) {
+                            System.out.println("Do you want to cook the foods? y/n");
+                            String ans = scanner.nextLine().toString();
+                            if (ans.equals("y")) {
+                                for (int i = 0; i < Restaurant.order.size(); i++) {
+                                    Chef newChef = new Chef();
+
+                                    if (Restaurant.order.get(i).state.equals("NOTREADY")) {
+                                        if (newChef.cook(Restaurant.order.get(i).id).toString().equals("SUCCESS")) {
+                                            System.out.println("Order(s) cooked");
+
+                                        }
                                     }
                                 }
                             }
@@ -369,18 +276,18 @@ public class Main {
                     }
                 }
 
-            } else if (result_of_login == "CASHIER") {
+            } else if (result_of_login.equals("CASHIER")) {
                 System.out.println("You are a Cashier!");
 
                 boolean ifanyorder = false;
 
-                for (int i = 0; i < currentOrders.size(); i++) {
-                    if (currentOrders.get(i).state == "COOKED") {
+                for (int i = 0; i < Restaurant.order.size(); i++) {
+                    if (Restaurant.order.get(i).state.equals("COOKED")) {
                         ifanyorder = true;
                     }
                 }
 
-                if (currentOrders.size() == 0 || ifanyorder == false) {
+                if (Restaurant.order.size() == 0 || !ifanyorder) {
                     System.out.println("Sorry, there is no order to confirm!");
                     //ifanyorder = false;
 
@@ -391,11 +298,11 @@ public class Main {
                     System.out.println();
                     System.out.println("This is the list of order(s):");
 
-                    for (int i = 0; i < currentOrders.size(); i++) {
-                        if (currentOrders.get(i).state.toString() == "COOKED") {
+                    for (int i = 0; i < Restaurant.order.size(); i++) {
+                        if (Restaurant.order.get(i).state.toString().equals("COOKED")) {
 
-                            System.out.println("Order id: " + currentOrders.get(i).id + ", Username: " +
-                                    currentOrders.get(i).userName);
+                            System.out.println("Order id: " + Restaurant.order.get(i).id + ", Username: " +
+                                    Restaurant.order.get(i).userName);
                         }
                     }
                 }
@@ -404,11 +311,11 @@ public class Main {
                     System.out.println("Do you want to confirm the foods? y/n");
                     String ans = scanner.nextLine().toString();
                     if (ans.equals("y")) {
-                        for (int i = 0; i < currentOrders.size(); i++) {
+                        for (int i = 0; i < Restaurant.order.size(); i++) {
 
                             Cashier newCashier = new Cashier();
-                            if (currentOrders.get(i).state.toString() == "COOKED") {
-                                if (newCashier.confirmOrder(currentOrders.get(i).id).toString() == "SUCCESS") {
+                            if (Restaurant.order.get(i).state.toString().equals("COOKED")) {
+                                if (newCashier.confirmOrder(Restaurant.order.get(i).id).toString().equals("SUCCESS")) {
                                     System.out.println("Order(s) confirmed");
 
                                 }
@@ -417,18 +324,18 @@ public class Main {
                     }
                 }
 
-            } else if (result_of_login == "DELIVERYMAN") {
+            } else if (result_of_login.equals("DELIVERYMAN")) {
                 System.out.println("You are a Deliveryman!");
 
                 boolean ifanyorder = false;
 
-                for (int i = 0; i < currentOrders.size(); i++) {
-                    if (currentOrders.get(i).state.toString() == "CONFIRMED") {
+                for (int i = 0; i < Restaurant.order.size(); i++) {
+                    if (Restaurant.order.get(i).state.toString().equals("CONFIRMED")) {
                         ifanyorder = true;
 
                     }
                 }
-                if (currentOrders.size() == 0 || ifanyorder == false) {
+                if (Restaurant.order.size() == 0 || !ifanyorder) {
                     System.out.println("Sorry, there is no order to deliver!");
                     //ifanyorder = false;
 
@@ -438,11 +345,11 @@ public class Main {
                     System.out.println();
                     System.out.println("This is the list of order(s):");
 
-                    for (int i = 0; i < currentOrders.size(); i++) {
-                        if (currentOrders.get(i).state.toString() == "CONFIRMED") {
+                    for (int i = 0; i < Restaurant.order.size(); i++) {
+                        if (Restaurant.order.get(i).state.toString().equals("CONFIRMED")) {
 
-                            System.out.println("Order id: " + currentOrders.get(i).id + ", Username: " +
-                                    currentOrders.get(i).userName + ", Address: " + currentOrders.get(i).address);
+                            System.out.println("Order id: " + Restaurant.order.get(i).id + ", Username: " +
+                                    Restaurant.order.get(i).userName + ", Address: " + Restaurant.order.get(i).address);
                         }
                     }
                 }
@@ -451,10 +358,10 @@ public class Main {
                     System.out.println("Do you want to deliver the foods? y/n");
                     String ans = scanner.nextLine().toString();
                     if (ans.equals("y")) {
-                        for (int i = 0; i < currentOrders.size(); i++) {
+                        for (int i = 0; i < Restaurant.order.size(); i++) {
                             DeliverMan newDelMan = new DeliverMan();
-                            if (currentOrders.get(i).state.toString() == "CONFIRMED") {
-                                if (newDelMan.deliver(currentOrders.get(i).id).toString() == "SUCCESS") {
+                            if (Restaurant.order.get(i).state.toString().equals("CONFIRMED")) {
+                                if (newDelMan.deliver(Restaurant.order.get(i).id).toString().equals("SUCCESS")) {
                                     System.out.println("Order(s) delivered");
 
                                 }
@@ -463,7 +370,7 @@ public class Main {
                     }
                 }
 
-            } else if (result_of_login == "CLIENT") {
+            } else if (result_of_login.equals("CLIENT")) {
                 System.out.println("You are a Client!");
                 System.out.println("Please enter 1 if you ordered before, otherwise enter 2 to make a new order!");
                 String ans = scanner.nextLine();
@@ -477,14 +384,14 @@ public class Main {
                         int ans2 = scanner.nextInt();
                         scanner.nextLine();
 
-                        if (currentOrders.size() == 0) {
+                        if (Restaurant.order.size() == 0) {
                             System.out.println("Sorry! We didn't find such order with your username!");
                         }
 
-                        for (int i = 0; i < currentOrders.size(); i++) {
-                            if (currentOrders.get(i).userName.equals(username_for_order) && currentOrders.get(i).id == ans2) {
+                        for (int i = 0; i < Restaurant.order.size(); i++) {
+                            if (Restaurant.order.get(i).userName.equals(username_for_order) && Restaurant.order.get(i).id == ans2) {
                                 System.out.print("Your order state is: ");
-                                System.out.println(currentOrders.get(i).state.toString());
+                                System.out.println(Restaurant.order.get(i).state.toString());
 
                             } else {
                                 System.out.println("Sorry! We didn't find such order with your username!");
@@ -499,7 +406,7 @@ public class Main {
                         Client newClient = new Client();
                         String str = newClient.revokeOrder(ans2).toString();
                         String str2 = "ORDER_ALREADY_COOKED";
-                        if (str == str2) {
+                        if (str.equals(str2)) {
                             System.out.println("Sorry! Order Already Cooked or Does not Exist and Can not be Revoked");
 
                         } else {
@@ -509,35 +416,35 @@ public class Main {
                     }
                 } else if (ans.equals("2")) {
 
-                    System.out.println("------This is our MENU------");
-                    System.out.println();
-                    BufferedReader reader;
-                    try {
-                        reader = new BufferedReader(new FileReader(
-                                "src/resources/Food"));
-                        String line = reader.readLine();
-                        while (line != null) {
-                            // System.out.println(line);
-                            // read next line
-
-                            String ins1 = line;
-                            String[] ins2 = ins1.split(",");
-                            System.out.print(ins2[0]);
-                            System.out.print(",");
-                            System.out.println(ins2[1]);
-                            line = reader.readLine();
-                        }
-
-                        reader.close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+//                    System.out.println("------This is our MENU------");
+//                    System.out.println();
+//                    BufferedReader reader;
+//                    try {
+//                        reader = new BufferedReader(new FileReader(
+//                                "src/resources/Food"));
+//                        String line = reader.readLine();
+//                        while (line != null) {                         اینا حذف!!!!!
+//                            // System.out.println(line);
+//                            // read next line
+//
+//                            String ins1 = line;
+//                            String[] ins2 = ins1.split(",");
+//                            System.out.print(ins2[0]);
+//                            System.out.print(",");
+//                            System.out.println(ins2[1]);
+//                            line = reader.readLine();
+//                        }
+//
+//                        reader.close();
+//                    } catch (IOException e) {
+//                        e.printStackTrace();
+//                    }
 
                     Order newOrder = new Order();
                     Client newClient = new Client();
                     String str = newClient.makeOrder(newOrder).toString();
                     String str2 = "ORDER_ALREADY_EXIST";
-                    if (str == str2) {
+                    if (str.equals(str2)) {
                         System.out.println("Sorry! Order Already Exist");
                     } else {
                         System.out.println("Thank You, We Received Your Order!");
@@ -552,11 +459,82 @@ public class Main {
             String r = scanner.nextLine().toString();
             if (r.equals("1")) {
                 repeatFlag = false;
+                writingFile(fileManager);
             }
-//baste shodane while avale maine barname
         }
-//baste shodane main barname
     }
+
+    private static int mainMenuForChef() {
+        int selectedNumber;
+        System.out.println("You are a Chef!");
+        System.out.println("What do you want to do?");
+        System.out.println(" 1) addFood");
+        System.out.println(" 2) editFood");
+        System.out.println(" 3) removeFood");
+        System.out.println(" 4) change state");
+        System.out.println(" 5) cook");
+        selectedNumber = scanner.nextInt();
+        return selectedNumber;
+    }
+
+    private static Food selectFood() {
+        int id;
+        String name;
+        int ingredientsSize;
+        boolean isAvailable;
+        System.out.println("home>login>chef>add food\n");
+        System.out.print("Id   : ");
+        id = scanner.nextInt();
+        scanner.nextLine();
+        System.out.print("Name : ");
+        name = scanner.nextLine();
+        System.out.println("how many ingredients ?");
+        ingredientsSize = scanner.nextInt();
+        scanner.nextLine();
+        String[] ingredients = new String[ingredientsSize];
+        for (int i = 0; i < ingredientsSize; i++) {
+            ingredients[i] = scanner.nextLine();
+        }
+        System.out.println("Is available now ?");
+        System.out.println("1)Yes");
+        System.out.println("2)No");
+        int selectedNumber = scanner.nextInt();
+        scanner.nextLine();
+        isAvailable = selectedNumber == 1;
+        return new Food(id, name, ingredients, isAvailable);
+    }
+
+    private static void writingFile(FileManager fileManager) {
+        fileManager.write("", false);
+        for (int i = 0; i < Restaurant.food.size(); i++) {
+            fileManager.writeLine(Restaurant.food.get(i).toString(), true);
+        }
+    }
+
+    private static void fillFoodArraylist(FileManager fileManager) {
+        int x = 1;
+        int id;
+        String name;
+        boolean isAvailable;
+        if (fileManager.readLine(x) != null) {
+            while (fileManager.readLine(x)!=null) {
+                id = Integer.parseInt(fileManager.readLine(x + 1).substring(14));
+                name = fileManager.readLine(x + 2).substring(14);
+                String array = fileManager.readLine(x + 3).substring(14);
+                String array2 = array.replace("[", "");
+                String array3 = array2.replace("]", "");
+                String array4 = array3.replace(" ", "");
+                String[] ingredients = array4.split(",");
+
+                isAvailable = "true".equals(fileManager.readLine(x + 4).substring(14));
+                Food food = new Food(id, name, ingredients, isAvailable);
+                Restaurant.food.add(food);
+                x += 6;
+            }
+        }
+    }
+
+
 
 //baste shodane class e manine barname
 }

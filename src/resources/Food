@@ -1,5 +1,12 @@
-100,joojeKabab,true,morgh,piaz,namak,zaferan
-101,kababKoubideh,true,goosht,noon,namak
-102,kababBarg,true,goosht,namak
-103,ghormeSabzi,true,sabzi,goosht,namak,
-104,gheymeh,true,goosht,lape,namak
+Food
+ id          =1
+ name        =joogeh
+ ingredients =[chicken, rice]
+ isAvailable =true
+
+Food
+ id          =2
+ name        =pizza
+ ingredients =[X, Y, Z]
+ isAvailable =false
+

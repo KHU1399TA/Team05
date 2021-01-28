@@ -22,9 +22,9 @@ public class Client extends Main {
         order.state = "NOTREADY";
         boolean flag = true;
 
-        for (int j = 0; j < currentOrders.size(); j++) {
-            if (currentOrders.get(j).userName.equals(username_for_order) && currentOrders.get(j).foodId == food_ID
-                    && currentOrders.get(j).state == "NOTREADY") {
+        for (int j = 0; j < Restaurant.order.size(); j++) {
+            if (Restaurant.order.get(j).userName.equals(username_for_order) && Restaurant.order.get(j).foodId == food_ID
+                    && Restaurant.order.get(j).state.equals("NOTREADY")) {
                 flag = false;
             }
         }
@@ -33,7 +33,7 @@ public class Client extends Main {
             order.id = id_of_order;
             System.out.println("Your order id is: " + id_of_order);
             id_of_order = id_of_order + 1;
-            currentOrders.add(order);
+            Restaurant.order.add(order);
 
             return ActionResult.SUCCESS;
         } else {
@@ -43,10 +43,10 @@ public class Client extends Main {
 
     ActionResult revokeOrder(int id) {
 
-        for (int j = 0; j < currentOrders.size(); j++) {
+        for (int j = 0; j < Restaurant.order.size(); j++) {
 
-            if (currentOrders.get(j).id == id && currentOrders.get(j).state.toString() == "NOTREADY") {
-                currentOrders.remove(j);
+            if (Restaurant.order.get(j).id == id && Restaurant.order.get(j).state.toString().equals("NOTREADY")) {
+                Restaurant.order.remove(j);
                 return ActionResult.SUCCESS;
 
             } else {
