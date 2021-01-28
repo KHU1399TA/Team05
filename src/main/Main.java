@@ -1,5 +1,7 @@
 package main;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -31,8 +33,8 @@ public class Main {
         return formattedDate;
     }
 
-    public static void main(String[] args) {
-        fillFoodArraylist(fileManager);
+    public static void main(String[] args) throws ParseException {
+       fillOrderArraylist( fillFoodArraylist(fileManager),fileManager);
         while (repeatFlag) {
             System.out.println();
             if (repeatFlagCounter != 0) {
@@ -226,33 +228,33 @@ public class Main {
                             System.out.println();
                             System.out.println("This is the list of order(s):");
 
-                            for (int i = 0; i < Restaurant.order.size(); i++) {
-
-                                BufferedReader reader;
-                                try {
-                                    reader = new BufferedReader(new FileReader("src/resources/Food"));
-                                    String line = reader.readLine();
-
-                                    while (line != null) {
-                                        String ins1 = line;
-                                        String[] ins2 = ins1.split(",");
-                                        String foodid = ins2[0];
-                                        String nameoffood = ins2[1];
-                                        int foodid2 = Integer.parseInt(foodid);
-
-                                        if (Restaurant.order.get(i).foodId == foodid2 && Restaurant.order.get(i).state.equals("NOTREADY")) {
-
-                                            System.out.println("Order id: " + Restaurant.order.get(i).id + ", Type of food: " + nameoffood);
-                                        }
-
-                                        line = reader.readLine();
-                                    }
-
-                                    reader.close();
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                }
-                            }
+//                            for (int i = 0; i < Restaurant.order.size(); i++) {
+//
+//                                BufferedReader reader;
+//                                try {
+//                                    reader = new BufferedReader(new FileReader("src/resources/Food"));
+//                                    String line = reader.readLine();
+//
+//                                    while (line != null) {
+//                                        String ins1 = line;
+//                                        String[] ins2 = ins1.split(",");                                    ؟؟؟؟؟؟
+//                                        String foodid = ins2[0];
+//                                        String nameoffood = ins2[1];
+//                                        int foodid2 = Integer.parseInt(foodid);
+//
+//                                        if (Restaurant.order.get(i).foodId == foodid2 && Restaurant.order.get(i).state.equals("NOTREADY")) {
+//
+//                                            System.out.println("Order id: " + Restaurant.order.get(i).id + ", Type of food: " + nameoffood);
+//                                        }
+//
+//                                        line = reader.readLine();
+//                                    }
+//
+//                                    reader.close();
+//                                } catch (IOException e) {
+//                                    e.printStackTrace();
+//                                }
+//                            }
                         }
 
                         System.out.println();
@@ -416,29 +418,29 @@ public class Main {
                     }
                 } else if (ans.equals("2")) {
 
-//                    System.out.println("------This is our MENU------");
-//                    System.out.println();
-//                    BufferedReader reader;
-//                    try {
-//                        reader = new BufferedReader(new FileReader(
-//                                "src/resources/Food"));
-//                        String line = reader.readLine();
-//                        while (line != null) {                         اینا حذف!!!!!
-//                            // System.out.println(line);
-//                            // read next line
-//
-//                            String ins1 = line;
-//                            String[] ins2 = ins1.split(",");
-//                            System.out.print(ins2[0]);
-//                            System.out.print(",");
-//                            System.out.println(ins2[1]);
-//                            line = reader.readLine();
-//                        }
-//
-//                        reader.close();
-//                    } catch (IOException e) {
-//                        e.printStackTrace();
-//                    }
+                    System.out.println("------This is our MENU------");
+                    System.out.println();
+                    BufferedReader reader;
+                    try {
+                        reader = new BufferedReader(new FileReader(
+                                "src/resources/Food"));
+                        String line = reader.readLine();
+                        while (line != null) {
+                            // System.out.println(line);
+                            // read next line
+
+                            String ins1 = line;
+                            String[] ins2 = ins1.split(",");
+                            System.out.print(ins2[0]);
+                            System.out.print(",");
+                            System.out.println(ins2[1]);
+                            line = reader.readLine();
+                        }
+
+                        reader.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
 
                     Order newOrder = new Order();
                     Client newClient = new Client();
@@ -459,7 +461,7 @@ public class Main {
             String r = scanner.nextLine().toString();
             if (r.equals("1")) {
                 repeatFlag = false;
-                writingFile(fileManager);
+                writingFileFood(fileManager);
             }
         }
     }
@@ -504,14 +506,17 @@ public class Main {
         return new Food(id, name, ingredients, isAvailable);
     }
 
-    private static void writingFile(FileManager fileManager) {
+    private static void writingFileFood(FileManager fileManager) {
         fileManager.write("", false);
         for (int i = 0; i < Restaurant.food.size(); i++) {
             fileManager.writeLine(Restaurant.food.get(i).toString(), true);
+        } fileManager.writeLine("-".repeat(30), true);
+        for (int i = 0; i < Restaurant.order.size(); i++) {
+            fileManager.writeLine(Restaurant.order.get(i).toString(), true);
         }
     }
 
-    private static void fillFoodArraylist(FileManager fileManager) {
+    private static int fillFoodArraylist(FileManager fileManager) {
         int x = 1;
         int id;
         String name;
@@ -532,7 +537,43 @@ public class Main {
                 x += 6;
             }
         }
+        return x+1;
     }
+
+    private static void fillOrderArraylist(int x, FileManager fileManager) throws ParseException {
+        int id;
+        String userName;
+        int foodId;
+        String state;
+        String orderedAt;
+        String address;
+        if (fileManager.readLine(x) != null) {
+            while (fileManager.readLine(x) != null) {
+                id = Integer.parseInt(fileManager.readLine(x + 1).substring(12));
+                userName = fileManager.readLine(x + 2).substring(12);
+                foodId = Integer.parseInt(fileManager.readLine(x + 3).substring(12));
+                if (fileManager.readLine(x + 4).substring(12).equals("MADE")) state ="MADE";
+                else if (fileManager.readLine(x + 4).substring(12).equals("CONFIRMED")) state ="CONFIRMED";
+                else if (fileManager.readLine(x + 4).substring(12).equals("COOKED")) state ="COOKED";
+                else state ="DELIVERED";
+                orderedAt =fileManager.readLine(x + 5).substring(12);
+                address=fileManager.readLine(x+6).substring(12);
+                x += 8;
+                Order order = new Order();
+                order.id=id;
+                order.address = address;
+                order.foodId = foodId;
+                order.orderedAt = orderedAt;
+                order.userName =userName;
+                order.state = state;
+                Restaurant.order.add(order);
+            }
+        }
+
+    }
+
+
+
 
 
 
