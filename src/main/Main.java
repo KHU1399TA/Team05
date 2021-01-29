@@ -277,13 +277,7 @@ public class Main {
     }
 
     private static int mainMenuDeliveryman() {
-        int selectedNumber;
-        System.out.println(">home>login>Deliveryman\n");
-        System.out.println("please enter a number ");
-        System.out.println(" 1) deliver\n 2) previous");
-        selectedNumber = input.nextInt();
-        input.nextLine();
-        return selectedNumber;
+      //TO do miss
     }
 
     private static int mainMenuClient() {
@@ -299,13 +293,7 @@ public class Main {
     }
 
     private static int mainMenuCashier() {
-        int selectedNumber;
-        System.out.println(">home>login>Cashier\n");
-        System.out.println("please enter a number ");
-        System.out.println(" 1) confirm order\n 2) previous");
-        selectedNumber = input.nextInt();
-        input.nextLine();
-        return selectedNumber;
+       //to do miss
     }
 
     private static Food selectFood() {
@@ -484,17 +472,7 @@ public class Main {
     }
 
     private static void ordersForCashier() {
-        int id;
-        System.out.println(">home>login>cashier>confirm order\n");
-        for (int i = 0; i < Restaurant.order.size(); i++) {
-            if (Restaurant.order.get(i).state == OrderState.MADE)
-                System.out.println(Restaurant.order.get(i));
-        }
-        System.out.print("order id : ");
-        id = input.nextInt();
-        input.nextLine();
-        System.out.println("\n" + Cashier.confirmOrder(id));
-        System.out.println("_".repeat(40));
+        //to do miss
     }
 
     private static void ordersChef() {
@@ -512,22 +490,7 @@ public class Main {
     }
 
     private static void ordersForDeliveryman() {
-        int id;
-        System.out.println(">home>login>deliveryman>deliver\n");
-        for (int i = 0; i < Restaurant.order.size(); i++) {
-            if (Restaurant.order.get(i).state == OrderState.COOKED) {
-                System.out.println(Restaurant.order.get(i));
-                for (int j = 0; j < Restaurant.client.size(); j++) {
-                    if (Restaurant.order.get(i).userName.equals(Restaurant.client.get(j).userName))
-                        System.out.println(" address   =" + Restaurant.client.get(j).address);
-                }
-            }
-        }
-        System.out.print("Order id : ");
-        id = input.nextInt();
-        input.nextLine();
-        System.out.println("\n" + Deliveryman.deliver(id));
-        System.out.println("_".repeat(40));
+     //to do miss
     }
 
     private static void writingFile(FileManager fileManager) {
