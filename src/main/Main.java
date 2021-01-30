@@ -277,7 +277,14 @@ public class Main {
     }
 
     private static int mainMenuDeliveryman() {
-      //TO do miss
+        int selectNumber;
+        System.out.println(">home>login>Deliveryman\n");
+        System.out.println("pleas enter a number");
+        System.out.println("1)orders");
+        System.out.println("2)previous");
+        selectNumber=input.nextInt();
+        input.nextLine();
+        return selectNumber;
     }
 
     private static int mainMenuClient() {
@@ -293,7 +300,14 @@ public class Main {
     }
 
     private static int mainMenuCashier() {
-       //to do miss
+        int selectedNumber;
+        System.out.println(">home>login>Cashier\n");
+        System.out.println("pleas enter a number");
+        System.out.println("1)orders");
+        System.out.println("2)previous");
+        selectedNumber=input.nextInt();
+        input.nextLine();
+        return selectedNumber;
     }
 
     private static Food selectFood() {
@@ -472,7 +486,17 @@ public class Main {
     }
 
     private static void ordersForCashier() {
-        //to do miss
+        int id;
+        System.out.println(">home>login>cashier>made orders");
+        for (int i=0;i<Restaurant.order.size();i++) {
+            if (Restaurant.order.get(i).state == OrderState.MADE)
+                System.out.println(Restaurant.order.get(i));
+        }
+        System.out.println("order id : ");
+        id=input.nextInt();
+        input.nextLine();
+        System.out.println("\n"+Cashier.confirmOrder(id));
+        System.out.println("_".repeat(40));
     }
 
     private static void ordersChef() {
@@ -490,7 +514,16 @@ public class Main {
     }
 
     private static void ordersForDeliveryman() {
-     //to do miss
+        int id;
+        for(int i=0;i<Restaurant.order.size();i++){
+            if(Restaurant.order.get(i).state==OrderState.COOKED)
+                System.out.println(Restaurant.order.get(i));
+        }
+        System.out.println("order id:");
+        id=input.nextInt();
+        input.nextLine();
+        System.out.println("\n"+Deliveryman.deliver(id));
+        System.out.println("_".repeat(40));
     }
 
     private static void writingFile(FileManager fileManager) {

@@ -9,7 +9,14 @@ import java.util.Date;
 class Cashier extends User {
 
     static ActionResult confirmOrder(int id) {
-          //to do miss
+        for (int i = 0; i < Restaurant.order.size(); i++) {
+            if (Restaurant.order.get(i).state == OrderState.MADE)
+                Restaurant.order.get(i).state = OrderState.CONFIRMED;
+            return ActionResult.SUCCESS;
+        }
+        return ActionResult.ORDER_NOT_FOUND;
+
+
     }
 
     public Cashier(String userName, String password, AccessLevel accessLevel, Date registrationDate, Date lastLoginDate, String firstName, String lastName, String phoneNumber) {
