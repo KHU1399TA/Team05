@@ -107,8 +107,8 @@ public class Main {
                 while (previousClient) {
                     selectedNumber = mainMenuClient();
                     switch (selectedNumber) {
-                        case 1 -> receivingOrderInformation();
-                        case 2 -> revokingOrder();
+                        case 1 -> receivingOrderInformation(User.login(userName, password).user);
+                        case 2 -> revokingOrder(User.login(userName, password).user);
                         case 3 -> previousClient = false;
                     }
                 }
@@ -279,10 +279,10 @@ public class Main {
     private static int mainMenuDeliveryman() {
         int selectNumber;
         System.out.println(">home>login>Deliveryman\n");
-        System.out.println("pleas enter a number");
+        System.out.println("please enter a number");
         System.out.println("1)orders");
         System.out.println("2)previous");
-        selectNumber=input.nextInt();
+        selectNumber = input.nextInt();
         input.nextLine();
         return selectNumber;
     }
@@ -305,7 +305,7 @@ public class Main {
         System.out.println("pleas enter a number");
         System.out.println("1)orders");
         System.out.println("2)previous");
-        selectedNumber=input.nextInt();
+        selectedNumber = input.nextInt();
         input.nextLine();
         return selectedNumber;
     }
@@ -430,6 +430,7 @@ public class Main {
         int foodId;
         OrderState state;
         Date orderedAt;
+        String address;
         if (fileManager.readLine(x) != null) {
             while (fileManager.readLine(x) != null) {
                 id = Integer.parseInt(fileManager.readLine(x + 1).substring(12));
@@ -440,90 +441,139 @@ public class Main {
                 else if (fileManager.readLine(x + 4).substring(12).equals("COOKED")) state = OrderState.COOKED;
                 else state = OrderState.DELIVERED;
                 orderedAt = new SimpleDateFormat("E MMM dd HH:mm:ss z yyyy").parse(fileManager.readLine(x + 5).substring(12));
-                x += 7;
-                Order order = new Order(id, userName, foodId, state, orderedAt);
+                address = fileManager.readLine(x + 6).substring(12);
+                x += 8;
+                Order order = new Order(id, userName, foodId, state, orderedAt, address);
                 Restaurant.order.add(order);
             }
         }
 
     }
 
-    private static void receivingOrderInformation() {
+    private static void receivingOrderInformation(User user) {
         int id;
-        String userName;
         int foodId;
+        int selectedNumber;
+        String userName;
         OrderState state;
         Date orderedAt;
+        String address;
+        String defaultAddress = null;
         System.out.println("home>login>client>make order\n");
         for (int i = 0; i < Restaurant.food.size(); i++) {
             System.out.println(Restaurant.food.get(i));
         }
+        userName = user.userName;
         System.out.print("Order id : ");
         id = input.nextInt();
         input.nextLine();
-        System.out.print("username : ");
-        userName = input.nextLine();
         System.out.print("food id  : ");
         foodId = input.nextInt();
+        System.out.println("\nwhich address ? ");
+        for (int i = 0; i < Restaurant.client.size(); i++) {
+            if (userName.equals(Restaurant.client.get(i).userName)) {
+                defaultAddress = Restaurant.client.get(i).address;
+                break;
+            }
+        }
+        System.out.println("1) your default address : " + defaultAddress);
+        System.out.println("2) new address");
+        System.out.print("number : ");
+        selectedNumber = input.nextInt();
+        input.nextLine();
+        if (selectedNumber == 1) {
+            address = defaultAddress;
+        } else {
+            System.out.print("please enter new address : ");
+            address = input.nextLine();
+        }
         state = OrderState.MADE;
         orderedAt = new Date();
-        Order order = new Order(id, userName, foodId, state, orderedAt);
+        Order order = new Order(id, userName, foodId, state, orderedAt, address);
         System.out.println("\n" + Client.makeOrder(order));
         System.out.println("_".repeat(40));
     }
 
-    private static void revokingOrder() {
+    private static void revokingOrder(User user) {
         int id;
         String userName;
         System.out.println(">home>login>client>revoke order\n");
-        System.out.print("Order id : ");
-        id = input.nextInt();
-        input.nextLine();
-        System.out.print("username : ");
-        userName = input.nextLine();
-        System.out.println("\n" + Client.revokeOrder(id, userName));
-        System.out.println("_".repeat(40));
+        userName = user.userName;
+        System.out.println("-- these are your order(s) -- ");
+        boolean isThereAnyOrder = false;
+        for (int i = 0; i < Restaurant.order.size(); i++) {
+            if (Restaurant.order.get(i).userName.equals(userName)) {
+                System.out.println(Restaurant.order.get(i));
+                isThereAnyOrder = true;
+            }
+        }
+        if (!isThereAnyOrder) System.out.println("there is no order to show ! ");
+        else {
+            System.out.print("Order id : ");
+            id = input.nextInt();
+            input.nextLine();
+            System.out.println("\n" + Client.revokeOrder(id, userName));
+            System.out.println("_".repeat(40));
+        }
     }
 
     private static void ordersForCashier() {
         int id;
         System.out.println(">home>login>cashier>made orders");
-        for (int i=0;i<Restaurant.order.size();i++) {
-            if (Restaurant.order.get(i).state == OrderState.MADE)
-                System.out.println(Restaurant.order.get(i));
+        boolean isThereAnyOrder = false;
+        for (int i = 0; i < Restaurant.order.size(); i++) {
+            if (Restaurant.order.get(i).state == OrderState.MADE) {
+                System.out.println(Restaurant.order.get(i).toStringForEmployees());
+                isThereAnyOrder = true;
+            }
         }
-        System.out.println("order id : ");
-        id=input.nextInt();
-        input.nextLine();
-        System.out.println("\n"+Cashier.confirmOrder(id));
-        System.out.println("_".repeat(40));
+        if (!isThereAnyOrder) System.out.println("there is no order to show ! \n");
+        else {
+            System.out.print("order id : ");
+            id = input.nextInt();
+            input.nextLine();
+            System.out.println("\n" + Cashier.confirmOrder(id));
+            System.out.println("_".repeat(40));
+        }
     }
 
     private static void ordersChef() {
         int id;
         System.out.println(">home>login>chef>cook\n");
+        boolean isThereAnyOrder = false;
         for (int i = 0; i < Restaurant.order.size(); i++) {
-            if (Restaurant.order.get(i).state == OrderState.CONFIRMED)
-                System.out.println(Restaurant.order.get(i));
+            if (Restaurant.order.get(i).state == OrderState.CONFIRMED) {
+                System.out.println(Restaurant.order.get(i).toStringForEmployees());
+                isThereAnyOrder = true;
+            }
         }
-        System.out.print("order id : ");
-        id = input.nextInt();
-        input.nextLine();
-        System.out.println("\n" + Chef.cook(id));
-        System.out.println("_".repeat(40));
+        if (!isThereAnyOrder) System.out.println(" there is no order to show ! ");
+        else {
+            System.out.print("order id : ");
+            id = input.nextInt();
+            input.nextLine();
+            System.out.println("\n" + Chef.cook(id));
+            System.out.println("_".repeat(40));
+        }
     }
 
     private static void ordersForDeliveryman() {
         int id;
-        for(int i=0;i<Restaurant.order.size();i++){
-            if(Restaurant.order.get(i).state==OrderState.COOKED)
-                System.out.println(Restaurant.order.get(i));
+        boolean isThereAnyOrder = false;
+        for (int i = 0; i < Restaurant.order.size(); i++) {
+            if (Restaurant.order.get(i).state == OrderState.COOKED) {
+                System.out.println(Restaurant.order.get(i).toStringDeliveryman());
+                isThereAnyOrder = true;
+            }
         }
-        System.out.println("order id:");
-        id=input.nextInt();
-        input.nextLine();
-        System.out.println("\n"+Deliveryman.deliver(id));
-        System.out.println("_".repeat(40));
+        if (!isThereAnyOrder) System.out.println("there is no order to show !");
+        else {
+            System.out.println("order id:");
+            id = input.nextInt();
+            input.nextLine();
+            System.out.println("\n" + Deliveryman.deliver(id));
+            System.out.println("_".repeat(40));
+        }
     }
 
     private static void writingFile(FileManager fileManager) {

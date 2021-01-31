@@ -2,8 +2,8 @@ User :
  userName        =manager
  password        =123
  accessLevel     =MANAGER
- registrationDate=Wed Jan 27 22:23:54 IRST 2021
- lastLoginDate   =Wed Jan 27 22:23:54 IRST 2021
+ registrationDate=Sun Jan 31 13:32:35 IRST 2021
+ lastLoginDate   =Sun Jan 31 13:32:35 IRST 2021
  firstName       =manager
  lastName        =managery
  phoneNumber     =0910000
@@ -13,7 +13,7 @@ User :
  password        =123
  accessLevel     =CHEF
  registrationDate=Wed Jan 27 11:11:06 IRST 2021
- lastLoginDate   =Wed Jan 27 22:24:18 IRST 2021
+ lastLoginDate   =Sun Jan 31 13:36:42 IRST 2021
  firstName       =asdf
  lastName        =asdf
  phoneNumber     =asfd
@@ -23,7 +23,7 @@ User :
  password        =123
  accessLevel     =CASHIER
  registrationDate=Wed Jan 27 11:12:17 IRST 2021
- lastLoginDate   =Wed Jan 27 11:16:58 IRST 2021
+ lastLoginDate   =Sun Jan 31 13:34:22 IRST 2021
  firstName       =asdf
  lastName        =asdf
  phoneNumber     =asdf
@@ -33,7 +33,7 @@ User :
  password        =123
  accessLevel     =DELIVERYMAN
  registrationDate=Wed Jan 27 11:12:33 IRST 2021
- lastLoginDate   =Wed Jan 27 11:17:53 IRST 2021
+ lastLoginDate   =Sun Jan 31 13:37:43 IRST 2021
  firstName       =asdf
  lastName        =asdf
  phoneNumber     =asdf
@@ -49,6 +49,17 @@ Client:
  lastName        =af
  phoneNumber     =asf
  address         =asf
+
+Client:
+ userName        =hossein
+ password        =123
+ accessLevel     =CLIENT
+ registrationDate=Sun Jan 31 13:33:04 IRST 2021
+ lastLoginDate   =Sun Jan 31 13:33:11 IRST 2021
+ firstName       =hossein
+ lastName        =borghei
+ phoneNumber     =09102805003
+ address         =qom bolvar
 
 ------------------------------
 Food :
@@ -71,16 +82,10 @@ Food :
 
 ------------------------------
 Order
- id        =1
- userName  =client
- foodId    =1
- state     =DELIVERED
- orderedAt =Wed Jan 27 11:14:05 IRST 2021
-
-Order
- id        =2
- userName  =client
+ id        =1001
+ userName  =hossein
  foodId    =2
- state     =COOKED
- orderedAt =Wed Jan 27 11:16:46 IRST 2021
+ state     =DELIVERED
+ orderedAt =Sun Jan 31 13:34:02 IRST 2021
+ address   =tehran 
 
