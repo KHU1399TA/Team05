@@ -10,9 +10,11 @@ class Deliveryman extends User {
     static ActionResult deliver(int id) {
 
             for (int i=0;i<Restaurant.order.size();i++){
+                if(Restaurant.order.get(i).id==id){
                 if(Restaurant.order.get(i).state==OrderState.COOKED)
                     Restaurant.order.get(i).state=OrderState.DELIVERED;
                 return ActionResult.SUCCESS;
+            }
             }
             return ActionResult.ORDER_NOT_FOUND;
 
