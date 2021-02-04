@@ -1,99 +1,129 @@
 package main;
 
 import main.Enums.ActionResult;
+import utils.FileManager;
 
-import java.util.Scanner;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 
-class Chef extends Main {
-    //changed from "extends main.User" to extend Main
-private static final Scanner scanner=new Scanner(System.in);
-    static ActionResult addFood(Food food) {
-        for (int i = 0; i < Restaurant.food.size(); i++) {
-            if (Restaurant.food.get(i).id == food.id) return ActionResult.ID_OR_FOOD_ALREADY_EXIST;
+class Chef extends Main { //changed from "extends main.User" to "extend Main"
+    ActionResult addFood(Food food) {
+
+
+        String result_of_search = "not_ok";
+
+        BufferedReader reader;
+        try {
+            reader = new BufferedReader(new FileReader(
+                    "src/resources/Food"));
+            String line = reader.readLine();
+
+
+            while (line != null) {
+
+                String ins1 = line;
+                String[] ins2 = ins1.split(",");
+                String foodID = ins2[0];
+                String foodName = ins2[1];
+                int foodID2 = Integer.parseInt(foodID);
+                if (food.id == foodID2 || food.name.equals(foodName)) {
+                    result_of_search = "ok";
+                    break;
+                }
+
+                line = reader.readLine();
+            }
+
+            reader.close();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        Restaurant.food.add(food);
+
+        if (result_of_search == "ok") {
+            return ActionResult.FOOD_ALREADY_EXIST;
+        } else {
+
+            FileManager fmanager = new FileManager("src/resources/Food");
+            StringBuilder allString = new StringBuilder();
+            allString.append(food.id + ",");
+            allString.append(food.name + ",");
+            allString.append("true" + ",");
+
+            int size = food.ingredients.size();
+            for (int i = 0; i < size; i++) {
+                if (i == size - 1) {
+                    allString.append(food.ingredients.get(i));
+
+                } else {
+                    allString.append(food.ingredients.get(i) + ",");
+
+                }
+            }
+
+            allString.append("\n");
+            fmanager.write(allString.toString(), true);
+
+
+            return ActionResult.SUCCESS;
+        }
+
+    }
+
+    ActionResult editFood(int id) {
         return ActionResult.SUCCESS;
     }
 
-    static ActionResult editFood(int id) {
-        for (int i = 0; i < Restaurant.food.size(); i++) {
-            if (Restaurant.food.get(i).id == id) {
-                System.out.println(Restaurant.food.get(i));
-                System.out.println("which field ? \n choose a number");
-                System.out.println(" 1) id\n 2) name\n 3) ingredients");
-                int selectedNumber = scanner.nextInt();
-                scanner.nextLine();
-                switch (selectedNumber) {
-                    case 1 -> {
-                        System.out.print("new id : ");
-                        int newFoodId = scanner.nextInt();
-                        scanner.nextLine();
-                        for (int j = 0; j < Restaurant.food.size(); j++) {
-                            if (Restaurant.food.get(j).id == newFoodId) return ActionResult.ID_ALREADY_EXIST;
-                        }
-                        Restaurant.food.get(i).id = newFoodId;
-                        return ActionResult.SUCCESS;
-                    }
+    ActionResult removeFood(String id) {
 
-                    case 2 -> {
-                        System.out.print("new name : ");
-                        Restaurant.food.get(i).name = scanner.nextLine();
-                        return ActionResult.SUCCESS;
-                    }
+        boolean flag = false;
+        StringBuilder allString = new StringBuilder();
 
-                    case 3 -> {
-                        System.out.println("how many ingredients ?");
-                        int newIngredientsSize = scanner.nextInt();
-                        scanner.nextLine();
-                        Restaurant.food.get(i).ingredients=new String[newIngredientsSize];
-                        for (int j = 0; j < newIngredientsSize; j++) {
-                            Restaurant.food.get(i).ingredients[j]=scanner.nextLine();
-                        }
-                        return ActionResult.SUCCESS;
-                    }
+        BufferedReader reader;
+        try {
+            reader = new BufferedReader(new FileReader(
+                    "src/resources/Food"));
+            String line = reader.readLine();
+
+            while (line != null) {
+
+
+                String ins1 = line;
+                String[] ins2 = ins1.split(",");
+                String id2 = ins2[0];
+
+                if (id.equals(id2)) {
+                    flag = true;
+
+                } else {
+                    allString.append(line);
+                    allString.append("\n");
                 }
+                line = reader.readLine();
             }
+            reader.close();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        return ActionResult.FOOD_NOT_FOUND;
+        if (flag) {
+
+            FileManager fmanager = new FileManager("src/resources/Food");
+            fmanager.write(allString.toString(), false);
+            return ActionResult.SUCCESS;
+        } else {
+            return ActionResult.FOOD_NOT_FOUND;
+        }
     }
 
-    static ActionResult removeFood(int id) {
-        for (int i = 0; i < Restaurant.food.size(); i++) {
-            if (Restaurant.food.get(i).id == id) {
-                Restaurant.food.remove(i);
-                return ActionResult.SUCCESS;
-            }
-        }
-        return ActionResult.FOOD_NOT_FOUND;
-    }
-    static void foodState(){
-        int  selectedNumber;
-        boolean isAvailable;
-        System.out.print("id : ");
-        int id=scanner.nextInt();
-        System.out.println("Is available now ?");
-        System.out.println("1) Yes");
-        System.out.println("2) No");
-        selectedNumber=scanner.nextInt();
-        isAvailable = selectedNumber == 1;
-        System.out.println( changeFoodState(id,isAvailable));
-    }
-
-    static ActionResult  changeFoodState(int id, boolean isAvailable) {
-        for (int i = 0; i< Restaurant.food.size(); i++){
-            if (Restaurant.food.get(i).id==id){
-                Restaurant.food.get(i).isAvailable=isAvailable;
-                return ActionResult.SUCCESS;
-            }
-        }
-        return ActionResult.FOOD_NOT_FOUND;
+    ActionResult changeFoodState(int id, boolean isAvailable) {
+        return ActionResult.SUCCESS;
     }
 
     ActionResult cook(int id) {
 
-        for (int i = 0; i < Restaurant.order.size(); i++){
-            if(Restaurant.order.get(i).id == id){
-                Restaurant.order.get(i).state = "COOKED";
+        for (int i = 0; i < currentOrders.size(); i++) {
+            if (currentOrders.get(i).id == id) {
+                currentOrders.get(i).state = "COOKED";
             }
         }
 

@@ -10,7 +10,6 @@ import java.io.IOException;
 
 class Manager extends main.User {
     ActionResult register(main.User user) {
-        //System.out.println(user.lastLoginDate);
 
         String result_of_search = "not_ok";
 
@@ -22,13 +21,11 @@ class Manager extends main.User {
 
 
             while (line != null) {
-                // System.out.println(line);
-                // read next line
+
 
                 String ins1 = line;
                 String[] ins2 = ins1.split(",");
                 String username2 = ins2[3];
-                //String password2 = ins2[4];
                 if (user.userName.equals(username2)) {
                     result_of_search = "ok";
                     break;
@@ -73,8 +70,6 @@ class Manager extends main.User {
             String line = reader.readLine();
 
             while (line != null) {
-                // System.out.println(line);
-                // read next line
 
                 String ins1 = line;
                 String[] ins2 = ins1.split(",");
@@ -102,6 +97,7 @@ class Manager extends main.User {
                     allString.append("\n");
 
                 } else {
+
                     allString.append(line);
                     allString.append("\n");
                 }
@@ -132,8 +128,7 @@ class Manager extends main.User {
             String line = reader.readLine();
 
             while (line != null) {
-                // System.out.println(line);
-                // read next line
+
 
                 String ins1 = line;
                 String[] ins2 = ins1.split(",");

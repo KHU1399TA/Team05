@@ -1,12 +1,6 @@
-Food
- id          =1
- name        =joogeh
- ingredients =[chicken, rice]
- isAvailable =true
-
-Food
- id          =2
- name        =pizza
- ingredients =[X, Y, Z]
- isAvailable =false
-
+100,kababKoubideh,true,goosht,noon,namak
+101,kababBarg,true,goosht,namak
+102,ghormeSabzi,true,sabzi,goosht,namak
+103,makaroni,true,namak,roghan,maye,makaroni
+104,sabziPolo,true,sabzi,berenj,roghan
+105,mahi,true,roghan,namak,mahi
